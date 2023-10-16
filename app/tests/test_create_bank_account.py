@@ -5,7 +5,7 @@ from ..Konto import Konto
 class TestCreateBankAccount(unittest.TestCase):
     imie = "Dariusz"
     nazwisko = "Januszewski"
-    pesel = "12345678910"
+    pesel = "79103075873"
     promo_code = "PROM_XYZ"
 
     def test_tworzenie_konta(self):
@@ -22,6 +22,14 @@ class TestCreateBankAccount(unittest.TestCase):
     def test_pesel_with_len_12(self):
         konto = Konto(self.imie, self.nazwisko, "123456789000")
         self.assertEqual(konto.pesel, "Niepoprawny pesel!", "Za długi pesel został przyjety za prawidłowy!")
+    
+    def test_pesel_not_number(self):
+        konto = Konto(self.imie, self.nazwisko, "123456789aa")
+        self.assertEqual(konto.pesel, "Niepoprawny pesel!", "Pesel, który nie składa się z samych cyfr został przyjety za prawidłowy!")
+
+    def test_pesel_wrong_numbers(self):
+        konto = Konto(self.imie, self.nazwisko, "12345678910")
+        self.assertEqual(konto.pesel, "Niepoprawny pesel!", "Pesel, który nie istnieje został przyjęty za prawidłowy!")
 
     def test_pesel_empty(self):
         konto = Konto(self.imie, self.nazwisko, '')
@@ -44,12 +52,18 @@ class TestCreateBankAccount(unittest.TestCase):
         self.assertEqual(konto.saldo, 50, "Promocja nie została naliczona")
 
     def test_promo_year_59(self):
+        konto = Konto(self.imie, self.nazwisko, "59041613146", "PROM_123")
+        self.assertEqual(konto.saldo, 0, "Promocja została naliczona, pomimo złego roku urodzenia!")
+
     def test_promo_year_61(self):
-    def test_promo_year_60(self):
+        konto = Konto(self.imie, self.nazwisko, "61011256976", "PROM_123")
+        self.assertEqual(konto.saldo, 50, "Promocja nie została naliczona, pomimo dobrego roku urodzenia i kodu promocji!")
+
     def test_promo_year_2001(self):
+        konto = Konto(self.imie, self.nazwisko, "01211451663", "PROM_123")
+        self.assertEqual(konto.saldo, 50, "Promocja nie została naliczona, pomimo dobrego roku urodzenia i kodu promocji!")
+
     def test_promo_year_2001_wrong_promo_code(self):
-    def test_promo_year_correct_promo_code_wrong_pesel(self):
+        konto = Konto(self.imie, self.nazwisko, "01211451663", "PROM_123sdf")
+        self.assertEqual(konto.saldo, 0, "Promocja została naliczona, pomimo złego kodu promocyjnego!")
 
-
-
-    #tutaj proszę dodawać nowe testy
