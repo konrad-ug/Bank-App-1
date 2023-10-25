@@ -1,6 +1,6 @@
 import unittest
 
-# from ..Konto import Konto
+from ..Konto import Konto
 from ..KontoOsobiste import KontoOsobiste
 
 class TestCreateBankAccount(unittest.TestCase):
@@ -10,6 +10,9 @@ class TestCreateBankAccount(unittest.TestCase):
     promo_code = "PROM_XYZ"
 
     def test_tworzenie_konta(self):
+        konto = Konto()
+
+    def test_tworzenie_konta_osobistego(self):
         pierwsze_konto = KontoOsobiste(self.imie, self.nazwisko, self.pesel)
         self.assertEqual(pierwsze_konto.imie, "Dariusz", "Imie nie zostało zapisane!")
         self.assertEqual(pierwsze_konto.nazwisko, "Januszewski", "Nazwisko nie zostało zapisane!")
