@@ -11,6 +11,8 @@ class TestCreateBankAccount(unittest.TestCase):
 
     def test_tworzenie_konta(self):
         konto = Konto()
+        self.assertEqual(konto.saldo, 0, "Saldo nie jest zerowe!")
+        self.assertEqual(konto.express_transfer_fee, 0, "Opłata za przelew ekspresowy nie jest zerowa!")
 
     def test_tworzenie_konta_osobistego(self):
         pierwsze_konto = KontoOsobiste(self.imie, self.nazwisko, self.pesel)
