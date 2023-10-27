@@ -6,6 +6,7 @@ class KontoOsobiste(Konto):
         self.nazwisko = nazwisko
         self.saldo = 0
         self.express_transfer_fee = 1
+        self.history = []
 
         if self.is_pesel_correct(pesel):
             self.pesel = pesel
