@@ -22,9 +22,10 @@ class TestHitory(unittest.TestCase):
 
     def test_history_incoming_transfer(self):
         account = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
-        account.history = [1000, -200, -1]
+        account.history = [1000]
+        account.saldo = 1000
         account.zaksięguj_przelew_przychodzący(100)
-        self.assertEqual(account.history, [1000, -200, -1, 100], "Historia nie jest prawidłowa")
+        self.assertEqual(account.history, [1000, 100], "Historia nie jest prawidłowa")
 
     def test_history_outgoing_transfer(self):
         account = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
