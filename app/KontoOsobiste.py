@@ -47,13 +47,21 @@ class KontoOsobiste(Konto):
             return True
         return False
     
-    def zaciagnij_kredyt(self, kwota):
-        if len(self.history) >= 3:
-            if all(element > 0 for element in self.history[-3:]):
-                self.saldo += kwota
-                return True
-            elif len(self.history) >= 5 and sum(self.history[-5:]) > kwota:
-                self.saldo += kwota
-                return True
-            return False
+    
+    def czy_n_ostatnich_to_wpłaty(self, n):
+        if len(self.history) >= n and all(element > 0 for element in self.history[-n:]):
+            return True
         return False
+    
+    def czy_n_ostatnich_większe_od_kwoty(self, n, kwota):
+        if len(self.history) >= n and sum(self.history[-n:]) > kwota:
+            return True
+        return False 
+
+    def zaciagnij_kredyt(self, kwota):
+        if self.czy_n_ostatnich_większe_od_kwoty(5, kwota) or self.czy_n_ostatnich_to_wpłaty(3):
+            self.saldo += kwota
+            return True
+        return False
+
+

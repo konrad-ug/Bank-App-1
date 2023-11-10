@@ -1,39 +1,26 @@
 import unittest
+from parameterized import parameterized
 
 from ..Konto import Konto
 from ..KontoOsobiste import KontoOsobiste
 
 class TestLoan(unittest.TestCase):
-    personal_data = {
-        "name": "Dariusz",
-        "surname": "Januszewski",
-        "pesel": "79103075873"
-    }
-    def test_loan_no_history(self):
-        account = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
-        loan_ability = account.zaciagnij_kredyt(100)
-        self.assertFalse(loan_ability)
-        self.assertEqual(account.saldo, 0, "Saldo powinno wynosić 0")
-    
-    def test_loan_3_incoming_transfers(self):
-        account = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
-        account.history = [-230, 10, 410, 20]
-        loan_ability = account.zaciagnij_kredyt(100)
-        self.assertTrue(loan_ability)
-        self.assertEqual(account.saldo, 100, "Saldo powinno zostać powiększone")
-    
-    def test_loan_not_incoming_transfers(self):
-        account = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
-        account.history = [-10, -230, -1, -50]
-        account.saldo = 0
-        loan_ability = account.zaciagnij_kredyt(100)
-        self.assertFalse(loan_ability)
-        self.assertEqual(account.saldo, 0, "Saldo nie powinno zostać powiększone")       
-        
-    def test_loan_5_gt_loan(self):
-        account = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
-        account.history = [-1, -1, -1, 100, 200]
-        account.saldo = 0
-        loan_ability = account.zaciagnij_kredyt(100)
-        self.assertTrue(loan_ability)
-        self.assertEqual(account.saldo, 100, "Saldo powinno zostać powiększone")
+    name = "Dariusz"
+    surname = "Januszewski"
+    pesel = "79103075873"
+
+    def setUp(self):
+        self.konto = KontoOsobiste(self.name, self.surname, self.pesel)
+
+    @parameterized.expand([
+        ([], 100, False, 0),
+        ([-230, 10, 410, 20], 100, True, 100),
+        ([-10, -230, -1, -50], 100, False, 0),
+        ([-1, -1, -1, 100, 200], 100, True, 100) 
+    ])
+
+    def test_loan(self, historia, wnioskowana_kwota, oczekiwany_wynik_wniosku, oczekiwane_saldo):
+        self.konto.history = historia
+        czy_przyznany = self.konto.zaciagnij_kredyt(wnioskowana_kwota)
+        self.assertEqual(czy_przyznany, oczekiwany_wynik_wniosku)
+        self.assertEqual(self.konto.saldo, oczekiwane_saldo)
