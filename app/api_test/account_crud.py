@@ -1,12 +1,10 @@
 import unittest
 import requests
-from ..KontoOsobiste import KontoOsobiste
 
 class TestAccountCrud(unittest.TestCase):
     imie = "darek"
     nazwisko = "januszewski"
     pesel = "79103075873"
-    konto = KontoOsobiste(imie, nazwisko, pesel)
 
     def setUp(self):
         self.url = "http://localhost:5000/api/accounts"
@@ -45,3 +43,7 @@ class TestAccountCrud(unittest.TestCase):
         deleted_account_response = requests.get(self.url + f"/{self.pesel}")
         self.assertEqual(deleted_account_response.status_code, 404)
 
+    def test_6_create_second_account_with_the_same_pesel(self):
+        requests.post(self.url, json={"imie": self.imie, "nazwisko": self.nazwisko, "pesel": self.pesel, "saldo": 0 })
+        response = requests.post(self.url, json={"imie": self.imie, "nazwisko": self.nazwisko, "pesel": self.pesel, "saldo": 0 })
+        # self.assertEqual(response.)
