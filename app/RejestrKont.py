@@ -14,6 +14,6 @@ class RejestrKont():
     @classmethod
     def znajdź_konto(cls, szukany_pesel):
         for konto in cls.lista_kont:
-            if konto.pesel == szukany_pesel:
+            if str(konto.pesel) == str(szukany_pesel):
                 return konto
         return None
