@@ -46,4 +46,4 @@ class TestAccountCrud(unittest.TestCase):
     def test_6_create_second_account_with_the_same_pesel(self):
         requests.post(self.url, json={"imie": self.imie, "nazwisko": self.nazwisko, "pesel": self.pesel, "saldo": 0 })
         response = requests.post(self.url, json={"imie": self.imie, "nazwisko": self.nazwisko, "pesel": self.pesel, "saldo": 0 })
-        # self.assertEqual(response.)
+        self.assertEqual(response.status_code, 409)

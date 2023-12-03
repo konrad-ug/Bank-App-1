@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from app.RejestrKont import RejestrKont
 from app.KontoOsobiste import KontoOsobiste
+from app.Konto import Konto
 
 app = Flask(__name__)
 
@@ -8,6 +9,8 @@ app = Flask(__name__)
 def stworz_konto():
    dane = request.get_json()
    print(f"Request o stworzenie konta z danymi: {dane}")
+   if RejestrKont.znajdź_konto(dane["pesel"]) != None:
+      return jsonify({"message": "Konto już istnieje!"}), 409
    konto = KontoOsobiste(dane["imie"], dane["nazwisko"], dane["pesel"])
    RejestrKont.dodaj_konto(konto)
    return jsonify({"message": "Konto stworzone"}), 201
@@ -53,4 +56,21 @@ def zmodyfikuj_konto(pesel):
    
    return jsonify({"message": "zakutalizowano pomyślnie"}), 200
 
+@app.route("/api/accounts/<pesel>/transfer", methods=['POST'])
+def wykonaj_przelew(pesel):
+   request_data = request.get_json()
+   znalezione_konto = RejestrKont.znajdź_konto(str(pesel))
+   if znalezione_konto == None:
+      return jsonify({"message": "brak konta o podanym peselu"}), 404
+   else:
+      if request_data["type"] == "incoming":
+         znalezione_konto.zaksięguj_przelew_przychodzący(request_data["amount"])
+         return jsonify({"messasge": "pomyślnie zaksięgowano przelew przychodzący"}), 200
 
+      elif request_data["type"] == "outgoing":
+         if znalezione_konto.saldo >= request_data["amount"]:
+            znalezione_konto.przelew_wychodzący(request_data["amount"])
+            return jsonify({"messasge": "pomyślnie zaksięgowano przelew przychodzący"}), 200
+         return jsonify({"message": "niewystarczające środki na koncie"}), 422
+      else:
+         return jsonify({"messasge": "nieprawidłowy typ przelewu"}), 404
