@@ -10,7 +10,7 @@ class TestAccountCrud(unittest.TestCase):
         self.url = "http://localhost:5000/api/accounts"
 
     def test_1_create_account(self):
-        response = requests.post(self.url, json={"imie": self.imie, "nazwisko": self.nazwisko, "pesel": self.pesel, "saldo": 0 })
+        response = requests.post(self.url, json={"imie": self.imie, "nazwisko": self.nazwisko, "pesel": self.pesel})
         self.assertEqual(response.status_code, 201)
 
     def test_2_get_account_by_pesel(self):

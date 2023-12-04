@@ -1,6 +1,4 @@
 import unittest
-
-
 from ..Konto import Konto
 from ..KontoOsobiste import KontoOsobiste
 

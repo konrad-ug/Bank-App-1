@@ -1,5 +1,6 @@
 import unittest
 from parameterized import parameterized
+from unittest.mock import patch
 
 from ..Konto import Konto
 from ..KontoFirmowe import KontoFirmowe
@@ -8,7 +9,9 @@ class TestLoanCompany(unittest.TestCase):
     name = "Company_name"
     nip = "1234567890"
 
-    def setUp(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.is_nip_correct')
+    def setUp(self, mock_is_nip_correct):
+        mock_is_nip_correct.return_value = True
         self.konto = KontoFirmowe(self.name, self.nip)
 
     @parameterized.expand([
