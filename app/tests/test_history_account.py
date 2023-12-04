@@ -1,5 +1,5 @@
 import unittest
-
+from unittest.mock import patch
 from ..Konto import Konto
 from ..KontoOsobiste import KontoOsobiste
 from ..KontoFirmowe import KontoFirmowe
@@ -41,7 +41,9 @@ class TestHitory(unittest.TestCase):
         account.przelew_wychodzący_ekspresowy(100)
         self.assertEqual(account.history, [1000, -100, -1], "Historia nie jest prawidłowa")
 
-    def test_history_outgoing_express_company(self):
+    @patch('app.KontoFirmowe.KontoFirmowe.is_nip_correct')
+    def test_history_outgoing_express_company(self, mock_is_nip_correct):
+        mock_is_nip_correct.return_value = True
         account = KontoFirmowe(self.company_data["name"], self.company_data["nip"])
         account.history = [1000]
         account.saldo = 1000
