@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 from ..KontoFirmowe import KontoFirmowe
+import requests
 
 class TestCreateBankAccount(unittest.TestCase):
     name = "JOG"
