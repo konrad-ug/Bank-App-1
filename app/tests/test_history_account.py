@@ -1,8 +1,11 @@
 import unittest
 from unittest.mock import patch
+from unittest.mock import MagicMock
 from ..Konto import Konto
+from datetime import datetime
 from ..KontoOsobiste import KontoOsobiste
 from ..KontoFirmowe import KontoFirmowe
+from ..SMTPConnection import SMTPConnection
 
 class TestHitory(unittest.TestCase):
     personal_data = {
@@ -15,6 +18,70 @@ class TestHitory(unittest.TestCase):
         "name": "nazwaFirmy",
         "nip": "1234567890"
     }
+
+    def test_wyslij_maila_z_historią_osobiste(self):
+        konto = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
+        konto.saldo = 1000
+        konto.przelew_wychodzący(100)
+        smtp_connection = SMTPConnection()
+        smtp_connection.wyslij = MagicMock(return_value = True)
+        status = konto.wyslij_historie_na_konto("d_januszewski@gmail.com", smtp_connection)
+        self.assertTrue(status)
+        data = datetime.now().date()
+        smtp_connection.wyslij.assert_called_once_with(
+            f"Wyciąg z dnia {data}",
+            f"Twoja historia konta to: {konto.history}",
+            "d_januszewski@gmail.com"
+            )
+        
+    def test_wyslij_maila_z_historią_osobiste_niepowodzenie(self):
+        konto = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
+        konto.saldo = 1000
+        konto.przelew_wychodzący(100)
+        smtp_connection = SMTPConnection()
+        smtp_connection.wyslij = MagicMock(return_value = False)
+        status = konto.wyslij_historie_na_konto("d_januszewski@gmail.com", smtp_connection)
+        self.assertFalse(status)
+        data = datetime.now().date()
+        smtp_connection.wyslij.assert_called_once_with(
+            f"Wyciąg z dnia {data}",
+            f"Twoja historia konta to: {konto.history}",
+            "d_januszewski@gmail.com"
+            )
+    
+    @patch('app.KontoFirmowe.KontoFirmowe.is_nip_correct')
+    def test_wyslij_maila_z_historią_firmowe(self, mock_is_nip_correct):
+        mock_is_nip_correct.return_value = True
+        konto = KontoFirmowe(self.company_data["name"], self.company_data["nip"])
+        konto.saldo = 1000
+        konto.przelew_wychodzący(100)
+        smtp_connection = SMTPConnection()
+        smtp_connection.wyslij = MagicMock(return_value = True)
+        status = konto.wyslij_historie_na_konto("d_januszewski@gmail.com", smtp_connection)
+        self.assertTrue(status)
+        data = datetime.now().date()
+        smtp_connection.wyslij.assert_called_once_with(
+            f"Wyciąg z dnia {data}",
+            f"Historia konta Twojej firmy to: {konto.history}",
+            "d_januszewski@gmail.com"
+            )
+    
+    @patch('app.KontoFirmowe.KontoFirmowe.is_nip_correct')
+    def test_wyslij_maila_z_historią_firmowe_niepowodzenie(self, mock_is_nip_correct):
+        mock_is_nip_correct.return_value = True
+        konto = KontoFirmowe(self.company_data["name"], self.company_data["nip"])
+        konto.saldo = 1000
+        konto.przelew_wychodzący(100)
+        smtp_connection = SMTPConnection()
+        smtp_connection.wyslij = MagicMock(return_value = False)
+        status = konto.wyslij_historie_na_konto("d_januszewski@gmail.com", smtp_connection)
+        self.assertFalse(status)
+        data = datetime.now().date()
+        smtp_connection.wyslij.assert_called_once_with(
+            f"Wyciąg z dnia {data}",
+            f"Historia konta Twojej firmy to: {konto.history}",
+            "d_januszewski@gmail.com"
+            )
 
     def test_history_new_account(self):
         new_account = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])

@@ -1,4 +1,5 @@
 from .Konto import Konto
+from .SMTPConnection import SMTPConnection
 
 class KontoOsobiste(Konto):
     def __init__(self, imie, nazwisko, pesel, promo_code = None):
@@ -7,6 +8,7 @@ class KontoOsobiste(Konto):
         self.saldo = 0
         self.express_transfer_fee = 1
         self.history = []
+        self.email_msg = "Twoja historia konta to"
 
         if self.is_pesel_correct(pesel):
             self.pesel = pesel

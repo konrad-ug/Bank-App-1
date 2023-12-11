@@ -1,4 +1,5 @@
 [run]
 omit = 
     */dist-packages/*,
+    */SMTPConnection.py,
     */KontoFirmowe.py
