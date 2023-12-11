@@ -1,4 +1,5 @@
 from .Konto import Konto
+from .SMTPConnection import SMTPConnection
 from datetime import datetime
 import os
 import requests
@@ -10,6 +11,7 @@ class KontoFirmowe(Konto):
         self.name = name
         self.saldo = 0
         self.history = []
+        self.email_msg = "Historia konta Twojej firmy to"
         
         if len(nip) == 10:
             if self.is_nip_correct(nip):
