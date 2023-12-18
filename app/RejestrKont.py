@@ -1,6 +1,12 @@
 from .Konto import Konto
+from .KontoOsobiste import KontoOsobiste
+from pymongo import MongoClient
+
 
 class RejestrKont():
+    client = MongoClient('localhost', 27017)
+    db = client['bank_baza']
+    collection = db['konta']
     lista_kont = []
 
     @classmethod
@@ -17,3 +23,18 @@ class RejestrKont():
             if str(konto.pesel) == str(szukany_pesel):
                 return konto
         return None
+
+    @classmethod
+    def load(cls):
+        cls.lista_kont = []
+        for konto in cls.collection.find({}):
+            nowe_konto = KontoOsobiste(konto["imie"], konto["nazwisko"], konto['pesel'])
+            nowe_konto.historia = konto['historia']
+            nowe_konto.saldo = konto['saldo']
+            cls.dodaj_konto(nowe_konto)
+
+    @classmethod
+    def save(cls):
+        cls.collection.delete_many({})
+        for konto in cls.lista_kont:
+            collection.insert_one({ "imie": konto.imie, "nazwisko": konto.nazwisko, "saldo": konto.saldo, "pesel": konto.pesel, "history": konto.history })
