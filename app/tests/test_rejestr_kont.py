@@ -48,7 +48,7 @@ class TestRejestr(unittest.TestCase):
 
     
     @patch('app.RejestrKont.RejestrKont.collection')
-    def test_load_emptying_list(self, mock_collection):
+    def test_load(self, mock_collection):
         mock_collection.find.return_value = [
             {"imie": "Jan", "nazwisko": "Kowalski", "pesel": "79103075873", "saldo": 1000, "history": []}
         ]
