@@ -27,14 +27,17 @@ class RejestrKont():
     @classmethod
     def load(cls):
         cls.lista_kont = []
+        # print(lista_kont)
         for konto in cls.collection.find({}):
             nowe_konto = KontoOsobiste(konto["imie"], konto["nazwisko"], konto['pesel'])
-            nowe_konto.historia = konto['historia']
+            nowe_konto.history = konto['history']
             nowe_konto.saldo = konto['saldo']
-            cls.dodaj_konto(nowe_konto)
+            cls.lista_kont.append(nowe_konto)
 
     @classmethod
     def save(cls):
         cls.collection.delete_many({})
         for konto in cls.lista_kont:
-            collection.insert_one({ "imie": konto.imie, "nazwisko": konto.nazwisko, "saldo": konto.saldo, "pesel": konto.pesel, "history": konto.history })
+            cls.collection.insert_one({ "imie": konto.imie, "nazwisko": konto.nazwisko, 
+                                   "saldo": konto.saldo, "pesel": konto.pesel, 
+                                   "history": konto.history })

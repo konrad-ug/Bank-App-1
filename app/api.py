@@ -75,13 +75,13 @@ def wykonaj_przelew(pesel):
       else:
          return jsonify({"messasge": "nieprawidłowy typ przelewu"}), 404
 
-   @app.route("/api/accounts/save", methods=['PATCH'])
-   def save_to_db():
-      RejestrKont.save()
-      return jsonify({"message": "accounts were saved to db"})
+@app.route("/api/accounts/save", methods=['PATCH'])
+def save_to_db():
+   RejestrKont.save()
+   return jsonify({"message": "accounts were saved to db"})
 
-   @app.route("/api/accounts/load", methods=['PATCH'])
-   def load_to_db():
-      RejestrKont.load()
-      return jsonify({"message": "accounts loaded from db"})
-   
+@app.route("/api/accounts/load", methods=['PATCH'])
+def load_from_db():
+   RejestrKont.load()
+   return jsonify({"message": "accounts loaded from db"})
+
