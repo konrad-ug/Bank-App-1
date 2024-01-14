@@ -26,7 +26,7 @@ def ile_kont():
 @app.route("/api/accounts/<pesel>", methods=['GET'])
 def wyszukaj_konto_z_peselem(pesel):
    wynik = RejestrKont.znajdź_konto(str(pesel))
-   print("z geta przez pesel", wynik)
+   # print("z geta przez pesel", wynik)
    if wynik != None:
       return jsonify({"imie": wynik.imie, "nazwisko": wynik.nazwisko, "pesel": str(wynik.pesel), "saldo": wynik.saldo }), 200
    return jsonify({"message": "brak konta o podanym peselu"}), 404
@@ -78,10 +78,10 @@ def wykonaj_przelew(pesel):
 @app.route("/api/accounts/save", methods=['PATCH'])
 def save_to_db():
    RejestrKont.save()
-   return jsonify({"message": "accounts were saved to db"})
+   return jsonify({"message": "accounts were saved to db"}), 200
 
 @app.route("/api/accounts/load", methods=['PATCH'])
 def load_from_db():
    RejestrKont.load()
-   return jsonify({"message": "accounts loaded from db"})
+   return jsonify({"message": "accounts loaded from db"}), 200
 
