@@ -25,8 +25,11 @@ def ile_kont():
 
 @app.route("/api/accounts/<pesel>", methods=['GET'])
 def wyszukaj_konto_z_peselem(pesel):
-   wynik = RejestrKont.znajdź_konto(str(pesel))
-   # print("z geta przez pesel", wynik)
+   print("pesel", pesel)
+   wynik = RejestrKont.znajdź_konto(pesel)
+   # wynik3 = RejestrKont.znajdź_konto("Niepoprawny pesel!")
+   wynik2 = RejestrKont.ile_kont()
+   print("z geta przez pesel", wynik, wynik2)
    if wynik != None:
       return jsonify({"imie": wynik.imie, "nazwisko": wynik.nazwisko, "pesel": str(wynik.pesel), "saldo": wynik.saldo }), 200
    return jsonify({"message": "brak konta o podanym peselu"}), 404

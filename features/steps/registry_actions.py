@@ -8,7 +8,7 @@ assert_equal = AssertEqual()
 URL = "http://localhost:5000"
 
 
-@when('I create an account using name: {name}, last name: {last_name}, pesel: {pesel}')
+@when('I create an account using name: "{name}", last name: "{last_name}", pesel: "{pesel}"')
 def utworz_konto(context, name, last_name, pesel):
     json_body = { "imie": f"{name}",
     "nazwisko": f"{last_name}",

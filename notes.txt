@@ -1,0 +1,3 @@
+flask --app app/api.py --debug run
+
+docker compose -f mongo.yml up
