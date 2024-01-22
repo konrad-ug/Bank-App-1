@@ -41,5 +41,5 @@ jobs:
           docker compose -f mongo.yml up -d
       - name: Gherkin Scenarios
         run: |
-          cd app
+          cd app/features/steps
           behave
