@@ -21,7 +21,6 @@ class KontoOsobiste(Konto):
             self.saldo = 0
 
     def is_pesel_correct(self, pesel):
-        # return True
         if len(pesel) != 11:
             return False
         
@@ -29,13 +28,6 @@ class KontoOsobiste(Konto):
             return False
         
         return True
-        
-        # weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
-        # control_digit = 10 - sum(int((pesel[i]) * weights[i]) % 10 for i in range(10)) % 10
-
-        # if int(pesel[10]) == control_digit:
-        #     return True
-        # return False
 
 
     def is_promo_code_correct(self, promo_code):
