@@ -38,7 +38,7 @@ jobs:
           flask --app app/api.py run &
       - name: Prepare Docker
         run: |
-          docker compose -f app/mongo.yml up -d
+          docker compose -f mongo.yml up -d
       - name: Gherkin Scenarios
         run: |
           cd app
