@@ -1,43 +1,34 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# .github/workflows/gherkin_scenarios.yml
 
-name: Gherkin scenarios
+name: Gherkin Scenarios
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   pull_request:
-    branches: ["main"]
-
-permissions:
-  contents: read
+    branches:
+      - main
 
 jobs:
-  build:
+  gherkin_scenarios:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
           python-version: "3.10"
-      - name: start mongo DB
+
+      - name: Start Flask App and MongoDB
         run: |
-          docker compose -f mongo.yml up -d
-          # echo "Waiting for MongoDB to be ready..."
-          # while ! docker exec mongo mongo --eval "db.adminCommand('ping')"; do sleep 1; done
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flake8 pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: start flask
-        run: |
+          pip install -r requirements.txt
+          docker-compose -f mongo.yml up -d
           flask --app app/api.py run &
-      - name: install behave
+
+      - name: Run Gherkin Scenarios
         run: |
-          pip install behave
-      - name: Execute gherkin scenarios
-        run: |
-          behave app/features
+          cd app
+          behave
