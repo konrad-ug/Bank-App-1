@@ -26,7 +26,7 @@ jobs:
         run: pip install -r requirements.txt
       - name: Start Flask App
         run: |
-          flask --app app/api.py run &
+          flask --app app/api.py --debug run &
       - name: Connect with Mongo by docker
         run: |
           docker compose -f mongo.yml up -d

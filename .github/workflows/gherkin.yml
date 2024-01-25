@@ -30,6 +30,5 @@ jobs:
 
       - name: Run Gherkin Scenarios
         run: |
-          cd app
-          cd steps
+          cd features
           behave
