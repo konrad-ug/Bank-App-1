@@ -6,6 +6,7 @@ class Konto:
         self.saldo = 0
         self.history = []
         self.email_msg = ""
+        
  
     def zaksięguj_przelew_przychodzący(self, kwota):
         if kwota > 0:
