@@ -1,6 +1,6 @@
 import unittest
-from ..Konto import Konto
 from ..KontoOsobiste import KontoOsobiste
+from parameterized import parameterized
 
 class TestTransfer(unittest.TestCase):
     personal_data = {
@@ -9,16 +9,15 @@ class TestTransfer(unittest.TestCase):
         "pesel": "79103075873"
     }
 
-    def test_incomming_transfer(self):
+    @parameterized.expand([
+        (100, 100),
+        (-100, 0),
+    ])
+    def test_incomming_transfer(self, transfer_amount, expected_balance):
         pierwsze_konto = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
-        pierwsze_konto.zaksięguj_przelew_przychodzący(100)
-        self.assertEqual(pierwsze_konto.saldo, 100, "Saldo nie jest poprawne")
+        pierwsze_konto.zaksięguj_przelew_przychodzący(transfer_amount)
+        self.assertEqual(pierwsze_konto.saldo, expected_balance, "Saldo nie jest poprawne")
     
-    def test_incoming_transfer_with_incorrect_amount(self):
-        pierwsze_konto = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
-        pierwsze_konto.zaksięguj_przelew_przychodzący(-100)
-        self.assertEqual(pierwsze_konto.saldo, 0, "Saldo nie jest poprawne!")
-        
     def test_outgoing_transfer_amount_greater_than_saldo(self):
         pierwsze_konto = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
         pierwsze_konto.saldo = 50

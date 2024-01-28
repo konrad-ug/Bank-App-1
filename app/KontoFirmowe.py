@@ -1,5 +1,4 @@
 from .Konto import Konto
-from .SMTPConnection import SMTPConnection
 from datetime import datetime
 import os
 import requests

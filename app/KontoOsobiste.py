@@ -1,5 +1,4 @@
 from .Konto import Konto
-from .SMTPConnection import SMTPConnection
 
 class KontoOsobiste(Konto):
     def __init__(self, imie, nazwisko, pesel, promo_code = None):

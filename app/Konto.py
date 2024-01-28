@@ -1,12 +1,10 @@
 from datetime import datetime
-from .SMTPConnection import SMTPConnection
 class Konto:
     def __init__(self):
         self.express_transfer_fee = 0
         self.saldo = 0
         self.history = []
         self.email_msg = ""
-        
  
     def zaksięguj_przelew_przychodzący(self, kwota):
         if kwota > 0:
@@ -30,4 +28,3 @@ class Konto:
         data = datetime.now().date()
         temat = f"Wyciąg z dnia {data}"
         return smtp_conntection.wyslij(temat, tresc, adresat)
-        # print(res)
