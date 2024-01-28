@@ -31,6 +31,9 @@ jobs:
       - name: start flask
         run: |
           flask --app app/api.py run &
+      - name: install behave
+        run: |
+          pip install behave
       - name: Execute gherkin scenarios
         run: |
           behave features
