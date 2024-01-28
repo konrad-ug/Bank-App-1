@@ -27,7 +27,6 @@ def ile_kont():
 def wyszukaj_konto_z_peselem(pesel):
    print("pesel", pesel)
    wynik = RejestrKont.znajdź_konto(pesel)
-   # wynik3 = RejestrKont.znajdź_konto("Niepoprawny pesel!")
    wynik2 = RejestrKont.ile_kont()
    print("z geta przez pesel", wynik, wynik2)
    if wynik != None:
