@@ -36,4 +36,4 @@ jobs:
           pip install behave
       - name: Execute gherkin scenarios
         run: |
-          behave app/features
+          behave features
