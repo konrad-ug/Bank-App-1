@@ -1,13 +1,13 @@
 import unittest
 from unittest.mock import patch
 from unittest.mock import MagicMock
-from ..Konto import Konto
 from datetime import datetime
+from parameterized import parameterized
 from ..KontoOsobiste import KontoOsobiste
 from ..KontoFirmowe import KontoFirmowe
 from ..SMTPConnection import SMTPConnection
 
-class TestHitory(unittest.TestCase):
+class TestHistory(unittest.TestCase):
     personal_data = {
         "name": "Dariusz",
         "surname": "Januszewski",
@@ -19,7 +19,7 @@ class TestHitory(unittest.TestCase):
         "nip": "1234567890"
     }
 
-    def test_wyslij_maila_z_historią_osobiste(self):
+    def test_personal_send_mail_with_history(self):
         konto = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
         konto.saldo = 1000
         konto.przelew_wychodzący(100)
@@ -34,7 +34,7 @@ class TestHitory(unittest.TestCase):
             "d_januszewski@gmail.com"
             )
         
-    def test_wyslij_maila_z_historią_osobiste_niepowodzenie(self):
+    def test_personal_send_mail_with_history_failed(self):
         konto = KontoOsobiste(self.personal_data["name"], self.personal_data["surname"], self.personal_data["pesel"])
         konto.saldo = 1000
         konto.przelew_wychodzący(100)
@@ -50,7 +50,7 @@ class TestHitory(unittest.TestCase):
             )
     
     @patch('app.KontoFirmowe.KontoFirmowe.is_nip_correct')
-    def test_wyslij_maila_z_historią_firmowe(self, mock_is_nip_correct):
+    def test_company_send_mail_with_history(self, mock_is_nip_correct):
         mock_is_nip_correct.return_value = True
         konto = KontoFirmowe(self.company_data["name"], self.company_data["nip"])
         konto.saldo = 1000
@@ -67,7 +67,7 @@ class TestHitory(unittest.TestCase):
             )
     
     @patch('app.KontoFirmowe.KontoFirmowe.is_nip_correct')
-    def test_wyslij_maila_z_historią_firmowe_niepowodzenie(self, mock_is_nip_correct):
+    def test_company_send_mail_with_history_failed(self, mock_is_nip_correct):
         mock_is_nip_correct.return_value = True
         konto = KontoFirmowe(self.company_data["name"], self.company_data["nip"])
         konto.saldo = 1000

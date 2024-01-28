@@ -2,7 +2,6 @@ import unittest
 from parameterized import parameterized
 from unittest.mock import patch
 
-from ..Konto import Konto
 from ..KontoFirmowe import KontoFirmowe
 
 class TestLoanCompany(unittest.TestCase):
@@ -15,10 +14,10 @@ class TestLoanCompany(unittest.TestCase):
         self.konto = KontoFirmowe(self.name, self.nip)
 
     @parameterized.expand([
-        ([], 0, 100, False, 0), # brak Zusu, za małe saldo
-        ([-1775, 3000], 3000, 100, True, 3100), # wszystko git
-        ([3000], 3000, 100, False, 3000), # brak Zusu
-        ([-1775], 10, 100, False, 10) # za małe saldo
+        ([], 0, 100, False, 0),
+        ([-1775, 3000], 3000, 100, True, 3100),
+        ([3000], 3000, 100, False, 3000),
+        ([-1775], 10, 100, False, 10)
     ])
 
     def test_loan_company(self, historia, saldo, wnioskowana_kwota, oczekiwany_wynik_wniosku, oczekiwane_saldo):
