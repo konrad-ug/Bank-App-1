@@ -1,7 +1,12 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=12329842&assignment_repo_type=AssignmentRepo)
-# Bank app
+Bank App
+The application shows my skills in automatic testing. It simulates the functions of a banking application, with each functionality fully tested. I used following technologies:
 
-Imię i nazwisko: Agata Bartczak
-
-Grupa: 2
- 
+Python
+Flask
+Docker
+MongoDB
+Unittest
+Gherkin
+Coverage
+Parameterized
+MagicMock
